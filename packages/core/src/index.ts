@@ -4,3 +4,4 @@ function describe(value: number | null): string {
     }
    return "this is a " + value.toFixed();
 }
+describe()
