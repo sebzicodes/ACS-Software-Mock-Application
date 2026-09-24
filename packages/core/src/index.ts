@@ -1,7 +1,7 @@
-export 
-function numberOrNull(value: number | null): string {
+
+export function numberOrNull(value: number | null): string {
     if (value === null) {
          return "absent value";
     }
-   return "this is a " + value.toFixed();
+   return "this is " + value.toFixed();
 }
