@@ -14,3 +14,8 @@ Owed: M0.3 — Vitest setup.
 Built: Vitest installed and configured in `packages/core`; `index.test.ts` covers both branches of `numberOrNull` (null-guard and normal path).
 Verified: `npm run test --workspace=packages/core` reports 2 passed (2).
 Owed: M0.4 — CI, green on day one.
+
+## M0.4 — CI, green on day one
+Built: `.github/workflows/ci.yml` (checkout → setup-node → npm ci → typecheck → test on `packages/core`); proved it via PR #1 on `lab/m0.4-red-green`.
+Verified: PR #1 went red on a failing assertion, green after the fix, merged; run #12 on `main` green.
+Owed: M1.1 — Domain model; opens by adding the branch rule on `main`.
