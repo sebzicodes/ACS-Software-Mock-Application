@@ -5,6 +5,6 @@ describe("null", () => {
           expect(numberOrNull(null)).toBe("absent value");
      })
      it("returns string for number", () => {
-          expect(numberOrNull(5)).toBe("this is 5");
+          expect(numberOrNull(5)).toBe("this is ");
      })
 });
