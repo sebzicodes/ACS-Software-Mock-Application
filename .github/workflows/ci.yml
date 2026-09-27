@@ -8,12 +8,12 @@ jobs:
   core: 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v5 #copies files onto vm
+      - uses: actions/setup-node@v5 #installs node itself, doesnt install your packages
         with: 
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run typecheck --workspace=packages/core
-      - run: npm run test --workspace=packages/core
+      - run: npm ci #reads and compares packages.json and packages-lock.json, and copies them onto vm
+      - run: npm run typecheck --workspace=packages/core #runs typescript on vm
+      - run: npm run test --workspace=packages/core #runs tests on vm
  
