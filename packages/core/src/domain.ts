@@ -9,3 +9,8 @@ export type Credential = {
     cardNumber: string;
     cardholderId: string;
 };
+export function bridgeLabel(Credential: string | Cardholder : string) {
+    if(Credential === Cardholder) {
+        
+    }
+}
