@@ -9,8 +9,9 @@ export type Credential = {
     cardNumber: string;
     cardholderId: string;
 };
-export function bridgeLabel(Credential: string | Cardholder : string) {
-    if(Credential === Cardholder) {
-        
+export function badgeLabel(credential: Credential, cardholder: Cardholder): string {
+    if(credential.id === cardholder.id) {
+        return credential.cardholderId + cardholder.lastName + cardholder.firstName; 
     }
+    return "Unknown Cardholder";
 }
