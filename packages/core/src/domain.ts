@@ -11,7 +11,8 @@ export type Credential = {
 };
 export function badgeLabel(credential: Credential, cardholder: Cardholder): string {
     if(credential.cardholderId === cardholder.id) {
-        return credential.cardholderId  + " (" + cardholder.lastName + ", " + cardholder.firstName ")"; 
+        return credential.cardNumber  + " (" + cardholder.lastName + ", " 
+        + cardholder.firstName + ")"; 
     }
     return "Unknown Cardholder";
-}
+};
