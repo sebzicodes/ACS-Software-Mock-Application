@@ -19,3 +19,8 @@ Owed: M0.4 — CI, green on day one.
 Built: `.github/workflows/ci.yml` (checkout → setup-node → npm ci → typecheck → test on `packages/core`); proved it via PR #1 on `lab/m0.4-red-green`.
 Verified: PR #1 went red on a failing assertion, green after the fix, merged; run #12 on `main` green.
 Owed: M1.1 — Domain model; opens by adding the branch rule on `main`.
+
+## M1.1 — Cardholder vs. credential
+Built: `protect-main` ruleset requiring `core`; `Cardholder` and `Credential` types (PR #2); `badgeLabel` in `core/src/domain.ts` with tests for linked and unlinked cardholders (PR #3). Note: `05a6d4e` is an empty test push to `main` made before the rule existed.
+Verified: direct push rejected (GH013); typecheck caught missing `cardholderId` (TS2741); 4 tests pass; PR #3 green.
+Owed: M1.2 — Credential status.

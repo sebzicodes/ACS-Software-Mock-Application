@@ -9,3 +9,10 @@ export type Credential = {
     cardNumber: string;
     cardholderId: string;
 };
+export function badgeLabel(credential: Credential, cardholder: Cardholder): string {
+    if(credential.cardholderId === cardholder.id) {
+        return credential.cardNumber  + " (" + cardholder.lastName + ", " 
+        + cardholder.firstName + ")"; 
+    }
+    return credential.cardNumber + " (unknown cardholder)";
+};
