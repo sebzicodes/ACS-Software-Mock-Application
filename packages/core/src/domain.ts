@@ -14,5 +14,5 @@ export function badgeLabel(credential: Credential, cardholder: Cardholder): stri
         return credential.cardNumber  + " (" + cardholder.lastName + ", " 
         + cardholder.firstName + ")"; 
     }
-    return "Unknown Cardholder";
+    return credential.cardNumber + " (unknown cardholder)";
 };
