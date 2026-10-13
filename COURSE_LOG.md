@@ -23,4 +23,10 @@ Owed: M1.1 — Domain model; opens by adding the branch rule on `main`.
 ## M1.1 — Cardholder vs. credential
 Built: `protect-main` ruleset requiring `core`; `Cardholder` and `Credential` types (PR #2); `badgeLabel` in `core/src/domain.ts` with tests for linked and unlinked cardholders (PR #3). Note: `05a6d4e` is an empty test push to `main` made before the rule existed.
 Verified: direct push rejected (GH013); typecheck caught missing `cardholderId` (TS2741); 4 tests pass; PR #3 green.
-Owed: M1.2 — Credential status.
+Owed: M1.2 — Credential status. 
+
+## M1.2 — Credential status
+Built: `CredentialStatus` union and `status` on `Credential` (PR #4); `isCredentialActive` with default-deny and one test per status (PR #5).
+Verified: typecheck caught TS2741 (missing field), TS2345 (`string` too wide), TS2820 (`"actve"`), TS2367 (impossible comparison); 8 tests pass locally; PR #5 green; `main` green (CI #32).
+Owed: M1.3 — Readers and controllers.
+Story: My first `isCredentialActive` listed the denied statuses joined with `&&`, a condition that could never be true; the compiler caught it, and I rewrote it to allow only "active", so any new status is denied by default.
