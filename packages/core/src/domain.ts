@@ -1,4 +1,3 @@
-
 export type Cardholder = {
     id: string;
     firstName: string;
@@ -19,3 +18,9 @@ export function badgeLabel(credential: Credential, cardholder: Cardholder): stri
     }
     return credential.cardNumber + " (unknown cardholder)";
 };
+export function isCredentialActive(credential: Credential): boolean {
+    if(credential.status === "active") {
+        return true;
+    }
+    return false;
+}
