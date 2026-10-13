@@ -24,3 +24,14 @@ export function isCredentialActive(credential: Credential): boolean {
     }
     return false;
 }
+export type Controller = {
+  id: string;
+  name: string;
+};
+
+export type Reader = {
+  id: string;
+  name: string;
+  controllerId: string; // refers to Controller.id
+  timezone: string;     // IANA name, e.g. "America/Chicago"
+};
