@@ -35,3 +35,14 @@ export type Reader = {
   controllerId: string; // refers to Controller.id
   timezone: string;     // IANA name, e.g. "America/Chicago"
 };
+
+export function controllerForReader(readers: Reader, controllers: Controller[]): Controller | Null { 
+    if(controllers === "" || controllers == null) {
+        return null;
+    }
+    for(const controller of controllers: ) {
+        if(controller.id === readers.controllerId) {
+            return 
+        }
+    }
+}
