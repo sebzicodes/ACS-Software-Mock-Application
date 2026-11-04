@@ -27,22 +27,20 @@ export function isCredentialActive(credential: Credential): boolean {
 export type Controller = {
   id: string;
   name: string;
-};
+}
 
 export type Reader = {
   id: string;
   name: string;
   controllerId: string; // refers to Controller.id
   timezone: string;     // IANA name, e.g. "America/Chicago"
-};
+}
 
-export function controllerForReader(readers: Reader, controllers: Controller[]): Controller | Null { 
-    if(controllers === "" || controllers == null) {
-        return null;
-    }
-    for(const controller of controllers: ) {
-        if(controller.id === readers.controllerId) {
-            return 
+export function controllerForReader(reader: Reader, controllers: Controller[]): Controller | null { 
+    for(const controller of controllers) {
+        if(controller.id === reader.controllerId) {
+            return controller;
         }
     }
+    return null;
 }
