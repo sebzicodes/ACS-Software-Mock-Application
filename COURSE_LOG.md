@@ -30,3 +30,9 @@ Built: `CredentialStatus` union and `status` on `Credential` (PR #4); `isCredent
 Verified: typecheck caught TS2741 (missing field), TS2345 (`string` too wide), TS2820 (`"actve"`), TS2367 (impossible comparison); 8 tests pass locally; PR #5 green; `main` green (CI #32).
 Owed: M1.3 — Readers and controllers.
 Story: My first `isCredentialActive` listed the denied statuses joined with `&&`, a condition that could never be true; the compiler caught it, and I rewrote it to allow only "active", so any new status is denied by default.
+
+## M1.3 — Readers and controllers
+Built: `Controller` and `Reader` types (PR #7); `controllerForReader` returning the wired controller or `null` for a dangling `controllerId`, with four tests (PR #8).
+Verified: typecheck clean; 12 tests pass locally; PR #8 CI green.
+Owed: M1.4 — Schedules.
+Story: I asserted against `controllers[2]` in a two-item list; TypeScript accepted it because it assumes an index holds a `Controller`, but at runtime it was `undefined`, and only the test caught the off-by-one.

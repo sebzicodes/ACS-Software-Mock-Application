@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest"
 import { badgeLabel, type Credential } from "./domain.js";
 import { isCredentialActive } from "./domain.js";
+import { controllerForReader, type Controller , type Reader} from "./domain.js";
 
 describe("badgelabel", () => {
     it("labels badge with linked cardholder", () => {
@@ -46,4 +47,50 @@ describe("isCredentialActive", () => {
         const result = isCredentialActive(credential);
         expect(result).toBe(false);
     }) 
+})
+describe("controllerForReader", () => {
+    it("returns controller for reader upon match", () => {
+        const controllers: Controller[] = [
+            { id:"03", name: "Con03" }, { id:"02", name: "Con02" },
+        ];
+        const reader : Reader = {
+            id: "re02", name: "Reader 02", controllerId: "02", timezone: "UTC"
+        };
+        const result = controllerForReader(reader, controllers);
+        expect(result).toBe(controllers[1]);
+    });
+    it("returns null for no matching controllers/readers", () => {
+        const controllers: Controller[] = [
+            { id:"03", name: "Con03" }, { id:"02", name: "Con02" },
+        ];
+        const reader : Reader = {
+            id: "re04", name: "Reader 04", controllerId: "04", timezone: "UTC"
+        };
+        const result = controllerForReader(reader, controllers);
+        expect(result).toBe(null);
+    });
+    it("returns null for empty controller array", () => {
+        const controllers: Controller[] = [];
+        const reader : Reader = {
+            id: "re02", name: "Reader 03", controllerId: "02", timezone: "UTC"
+        };
+        const result = controllerForReader(reader, controllers);
+        expect(result).toBe(null);
+    });
+    it("returns controller for multiple readers upon match", () => {
+        const controllers: Controller[] = [
+            { id:"01", name: "Con01" }, { id:"02", name: "Con02" }, { id:"03", name: "Con03" }, { id:"04", name: "Con04" },
+        ];
+        const reader1 : Reader = {
+            id: "re01", name: "Reader 01", controllerId: "01", timezone: "UTC"
+        };
+        const reader2 : Reader = {
+            id: "re02", name: "Reader 02", controllerId: "02", timezone: "UTC"
+        };
+        const result1 = controllerForReader(reader1, controllers);
+        expect(result1).toBe(controllers[0]);
+        const result2 = controllerForReader(reader2, controllers);
+        expect(result2).toBe(controllers[1]);
+    });
+    
 })
