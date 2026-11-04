@@ -86,11 +86,11 @@ describe("controllerForReader", () => {
         };
         const reader2 : Reader = {
             id: "re02", name: "Reader 02", controllerId: "02", timezone: "UTC"
-        }
+        };
         const result1 = controllerForReader(reader1, controllers);
         expect(result1).toBe(controllers[0]);
         const result2 = controllerForReader(reader2, controllers);
-        expect(result2).toBe(controllers[1])
+        expect(result2).toBe(controllers[1]);
     });
     
 })
