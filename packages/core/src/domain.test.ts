@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest"
 import { badgeLabel, type Credential } from "./domain.js";
 import { isCredentialActive } from "./domain.js";
 import { controllerForReader, type Controller , type Reader} from "./domain.js";
+import { type Schedule } from "./domain.js"
 
 describe("badgelabel", () => {
     it("labels badge with linked cardholder", () => {

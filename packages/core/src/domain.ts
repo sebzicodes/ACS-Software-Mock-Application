@@ -44,3 +44,16 @@ export function controllerForReader(reader: Reader, controllers: Controller[]): 
     }
     return null;
 }
+export type WeekDay = "mon" | "tue" | "wed" | "thu" | "fri";
+
+export type Schedule = {
+    id: string;
+    name: string;
+    windows: TimeWindow[];
+};
+
+export type TimeWindow = {
+  days: WeekDay[];
+  start: number; // minutes after local midnight, inclusive
+  end: number;   // minutes after local midnight, exclusive
+};
