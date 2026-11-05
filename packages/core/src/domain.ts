@@ -44,7 +44,7 @@ export function controllerForReader(reader: Reader, controllers: Controller[]): 
     }
     return null;
 }
-export type WeekDay = "mon" | "tue" | "wed" | "thu" | "fri";
+export type WeekDay = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
 
 export type Schedule = {
     id: string;
