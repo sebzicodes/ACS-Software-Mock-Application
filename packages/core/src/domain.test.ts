@@ -95,7 +95,7 @@ describe("controllerForReader", () => {
     
 })
 describe("isWithinSchedule", () => {
-    it("returns true when when minute equals start", () => {
+    it("returns true when minute equals start", () => {
         const weekDay : Schedule = {
             id: "",
             name: "workweek",
@@ -108,7 +108,7 @@ describe("isWithinSchedule", () => {
         const result = isWithinSchedule(weekDay, "mon", 420);
         expect(result).toBe(true);
     })
-    it("returns true when when minute is between start and end", () => {
+    it("returns true when minute is between start and end", () => {
         const weekDay : Schedule = {
             id: "",
             name: "workweek",
@@ -147,17 +147,21 @@ describe("isWithinSchedule", () => {
         const result = isWithinSchedule(weekDay, "sat", 600);
         expect(result).toBe(false);
     })
-    it("returns true when when day is within window", () => {
-        const withSaterday : Schedule = {
+    it("Allows saterday match with second window", () => {
+        const withSaturday : Schedule = {
             id: "",
             name: "workweek + Saterday",
             windows: [ {
-                days: ["mon", "tue", "wed", "thu", "fri", "sat"],
+                days: ["mon", "tue", "wed", "thu", "fri"],
                 start: 420,
                 end: 1080
-            }]
+            }, {
+                days: ["sat"],
+                start: 480,
+                end: 720
+            } ]
         }
-        const result = isWithinSchedule(withSaterday, "sat", 600);
+        const result = isWithinSchedule(withSaturday, "sat", 600);
         expect(result).toBe(true);
     })
     it("returns true when minute is before midnight", () => {
