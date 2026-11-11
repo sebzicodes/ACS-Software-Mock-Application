@@ -1,9 +1,8 @@
-import { describe, it, expect } from "vitest"
+import { describe, it, expect } from "vitest";
 import { badgeLabel, type Credential } from "./domain.js";
 import { isCredentialActive } from "./domain.js";
 import { controllerForReader, type Controller , type Reader} from "./domain.js";
-import { type Schedule } from "./domain.js"
-
+import { isWithinSchedule, type Schedule } from "./domain.js";
 describe("badgelabel", () => {
     it("labels badge with linked cardholder", () => {
 
@@ -94,4 +93,135 @@ describe("controllerForReader", () => {
         expect(result2).toBe(controllers[1]);
     });
     
+})
+describe("isWithinSchedule", () => {
+    it("returns true when minute equals start", () => {
+        const weekDay : Schedule = {
+            id: "",
+            name: "workweek",
+            windows: [ {
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 420,
+                end: 1080
+            }]
+        }
+        const result = isWithinSchedule(weekDay, "mon", 420);
+        expect(result).toBe(true);
+    })
+    it("returns true when minute is between start and end", () => {
+        const weekDay : Schedule = {
+            id: "",
+            name: "workweek",
+            windows: [ {
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 420,
+                end: 1080
+            }]
+        }
+        const result = isWithinSchedule(weekDay, "mon", 1079);
+        expect(result).toBe(true);
+    })
+    it("returns false when minute equals end", () => {
+        const weekDay : Schedule = {
+            id: "",
+            name: "workweek",
+            windows: [ {
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 420,
+                end: 1080
+            }]
+        }
+        const result = isWithinSchedule(weekDay, "mon", 1080);
+        expect(result).toBe(false);
+    })
+    it("returns false when day is outside window", () => {
+        const weekDay : Schedule = {
+            id: "",
+            name: "workweek",
+            windows: [ {
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 420,
+                end: 1080
+            }]
+        }
+        const result = isWithinSchedule(weekDay, "sat", 600);
+        expect(result).toBe(false);
+    })
+    it("Allows saturday match with second window", () => {
+        const withSaturday : Schedule = {
+            id: "",
+            name: "workweek + Saturday",
+            windows: [ {
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 420,
+                end: 1080
+            }, {
+                days: ["sat"],
+                start: 480,
+                end: 720
+            } ]
+        }
+        const result = isWithinSchedule(withSaturday, "sat", 600);
+        expect(result).toBe(true);
+    })
+    it("returns true when minute is before midnight", () => {
+        const graveyard : Schedule = {
+            id: "",
+            name: "night",
+            windows: [{
+                days: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+                start: 1320,
+                end: 1440
+            }, {
+                days: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+                start: 0,
+                end: 360
+            }]
+        }
+        const result = isWithinSchedule(graveyard, "tue", 1380 );
+        expect(result).toBe(true);
+    })
+    it("returns true when minute is past midnight", () => {
+        const graveyard : Schedule = {
+            id: "",
+            name: "night",
+            windows: [{
+                days: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+                start: 1320,
+                end: 1440
+            }, {
+                days: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+                start: 0,
+                end: 360
+            }]
+        }
+        const result = isWithinSchedule(graveyard, "wed", 120);
+        expect(result).toBe(true);
+    })
+    it("returns false when minute is past end", () => {
+        const graveyard : Schedule = {
+            id: "",
+            name: "night",
+            windows: [{
+                days: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+                start: 1320,
+                end: 1440
+            }, {
+                days: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+                start: 0,
+                end: 360
+            }]
+        }
+        const result = isWithinSchedule(graveyard, "wed", 360);
+        expect(result).toBe(false);
+    })
+    it("returns false when window is empty", () => {
+        const noWindows : Schedule = {
+            id: "",
+            name: "workweek",
+            windows: []
+        }
+        const result = isWithinSchedule(noWindows, "mon", 600 );
+        expect(result).toBe(false);
+    })
 })

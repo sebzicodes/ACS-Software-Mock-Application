@@ -36,3 +36,9 @@ Built: `Controller` and `Reader` types (PR #7); `controllerForReader` returning 
 Verified: typecheck clean; 12 tests pass locally; PR #8 CI green.
 Owed: M1.4 — Schedules.
 Story: I asserted against `controllers[2]` in a two-item list; TypeScript accepted it because it assumes an index holds a `Controller`, but at runtime it was `undefined`, and only the test caught the off-by-one.
+
+## M1.4 — Schedules
+Built: `WeekDay` union, `TimeWindow` (minutes after local midnight, start inclusive, end exclusive) and `Schedule` types (PR #9); `fix` adding sat/sun to `WeekDay` (PR #10); `isWithinSchedule` with default-deny and 9 table-driven tests (PR #11).
+Verified: typecheck caught TS2820 (`"thur"`) and TS2322 (`"friday"`); 21 tests pass locally; PR #__ CI green; `main` green after merge.
+Owed: M1.5 — Access levels.
+Story: My night-shift fixture was one window from 1080 to 130, which crosses midnight and contains zero minutes, so every overnight badge was denied; only the tests expecting `true` caught it, and I split it into two windows at midnight.

@@ -57,3 +57,15 @@ export type TimeWindow = {
   start: number; // minutes after local midnight, inclusive
   end: number;   // minutes after local midnight, exclusive
 };
+export function isWithinSchedule(schedule: Schedule, day: WeekDay, minute: number) : boolean {
+    for(const timeWindow of schedule.windows) {
+        if (
+            timeWindow.days.includes(day) &&
+            minute >= timeWindow.start &&
+            minute < timeWindow.end
+        ) {
+            return true;
+        }
+    }
+    return false;
+}
