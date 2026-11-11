@@ -147,10 +147,10 @@ describe("isWithinSchedule", () => {
         const result = isWithinSchedule(weekDay, "sat", 600);
         expect(result).toBe(false);
     })
-    it("Allows saterday match with second window", () => {
+    it("Allows saturday match with second window", () => {
         const withSaturday : Schedule = {
             id: "",
-            name: "workweek + Saterday",
+            name: "workweek + Saturday",
             windows: [ {
                 days: ["mon", "tue", "wed", "thu", "fri"],
                 start: 420,
