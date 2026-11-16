@@ -57,6 +57,16 @@ export type TimeWindow = {
   start: number; // minutes after local midnight, inclusive
   end: number;   // minutes after local midnight, exclusive
 };
+export type AccessLevelEntry = {
+  readerId: string;   // refers to Reader.id
+  scheduleId: string; // refers to Schedule.id
+};
+
+export type AccessLevel = {
+  id: string;
+  name: string;
+  entries: AccessLevelEntry[];
+};
 export function isWithinSchedule(schedule: Schedule, day: WeekDay, minute: number) : boolean {
     for(const timeWindow of schedule.windows) {
         if (
