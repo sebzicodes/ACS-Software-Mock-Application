@@ -79,3 +79,17 @@ export function isWithinSchedule(schedule: Schedule, day: WeekDay, minute: numbe
     }
     return false;
 }
+export function grantsAccess(level: AccessLevel, readerId: string, day: WeekDay,
+     minute: number, schedules: Schedule[]): boolean {
+        for(const entry of level.entries) {
+            if(entry.readerId === readerId) {
+                 for(const shift of schedules) {
+                    if(shift.id === entry.scheduleId && isWithinSchedule((shift), day, minute)) {
+                        return true;
+                    }
+                }
+            }
+           
+        }
+        return false;
+}

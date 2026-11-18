@@ -3,6 +3,8 @@ import { badgeLabel, type Credential } from "./domain.js";
 import { isCredentialActive } from "./domain.js";
 import { controllerForReader, type Controller , type Reader} from "./domain.js";
 import { isWithinSchedule, type Schedule } from "./domain.js";
+import { grantsAccess, type AccessLevel } from "./domain.js";
+
 describe("badgelabel", () => {
     it("labels badge with linked cardholder", () => {
 
@@ -222,6 +224,180 @@ describe("isWithinSchedule", () => {
             windows: []
         }
         const result = isWithinSchedule(noWindows, "mon", 600 );
+        expect(result).toBe(false);
+    })
+})
+describe("grantsAccess", () => {
+    it("Grants when the reader’s schedule covers the time", () => {
+        const workWeek : Schedule = {
+            id: "ww-2",
+            name: "work-week-swing",
+            windows: [{
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 780,
+                end: 1380
+            }]
+        }
+        const access : AccessLevel = {
+            id: "al-sec",
+            name: "access-level-security",
+            entries: [{
+                readerId: "fr-1",
+                scheduleId: "ww-2"
+            }]
+        }
+        const result = grantsAccess(access, "fr-1", "mon", 780, [workWeek]);
+        expect(result).toBe(true);
+    })
+    it("Denies when the reader’s schedule doesn’t cover the time", () => {
+        const workWeek : Schedule = {
+            id: "ww-2",
+            name: "work-week-swing",
+            windows: [{
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 780,
+                end: 1380
+            }]
+        }
+        const access : AccessLevel = {
+            id: "al-sec",
+            name: "access-level-security",
+            entries: [{
+                readerId: "fr-1",
+                scheduleId: "ww-2"
+            }]
+        }
+        const result = grantsAccess(access, "fr-1", "mon", 750, [workWeek]);
+        expect(result).toBe(false);
+    })
+    it("Denies when the level has no entry for the readerId", () => {
+        const workWeek : Schedule = {
+            id: "ww-2",
+            name: "work-week-swing",
+            windows: [{
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 780,
+                end: 1380
+            }]
+        }
+        const access : AccessLevel = {
+            id: "al-sec",
+            name: "access-level-security",
+            entries: [{
+                readerId: "",
+                scheduleId: "ww-2"
+            }]
+        }
+        const result = grantsAccess(access, "fr-1", "mon", 750, [workWeek]);
+        expect(result).toBe(false);
+    })
+    it("Denies when the entry’s scheduleId isn’t in schedules", () => {
+        const workWeek : Schedule = {
+            id: "ww-2",
+            name: "work-week-swing",
+            windows: [{
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 780,
+                end: 1380
+            }]
+        }
+        const access : AccessLevel = {
+            id: "al-sec",
+            name: "access-level-security",
+            entries: [{
+                readerId: "fr-1",
+                scheduleId: "ww-2"
+            }]
+        }
+        const result = grantsAccess(access, "fr-2", "mon", 750, [workWeek]);
+        expect(result).toBe(false);
+    })
+    it("Grants on reader’s second assigned schedule when first doesnt cover", () => {
+        const  workWeekDay: Schedule = {
+            id: "ww-1",
+            name: "work-week-1",
+            windows: [{
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 420,
+                end: 780
+            }]
+        }
+        const workWeekSwing: Schedule = {
+            id: "ww-2",
+            name: "work-week-2",
+            windows: [{
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 780,
+                end: 1380
+            }]
+        }
+        const access : AccessLevel = {
+            id: "al-sec",
+            name: "access-level-security",
+            entries: [{
+                readerId: "fr-1",
+                scheduleId: "ww-1"
+            }, {
+                readerId: "fr-1",
+                scheduleId: "ww-2"
+            }]
+        }
+        const result = grantsAccess(access, "fr-1", "mon", 790, [workWeekDay, workWeekSwing]);
+        expect(result).toBe(true);
+    })
+    it("Denies at the lobby when only the garage has a 24/7 entry", () => {
+        const  workWeekDay: Schedule = {
+            id: "ww-1",
+            name: "work-week-1",
+            windows: [{
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 420,
+                end: 780
+            }] 
+        }
+        const workWeekFull: Schedule = {
+            id: "ww-24-7",
+            name: "work-week-24-7",
+            windows: [{
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 0,
+                end: 500
+            }, {
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 500,
+                end: 1440
+            }]
+        }
+        const access : AccessLevel = {
+            id: "al-sec",
+            name: "access-level-security",
+            entries: [{
+                readerId: "fr-1",
+                scheduleId: "ww-1"
+            }, {
+                readerId: "g-1",
+                scheduleId: "ww-24-7"
+            }]
+        }
+        const result = grantsAccess(access, "fr-1", "mon", 1380, [workWeekDay, workWeekFull]);
+        expect(result).toBe(false);
+    })
+    it("Denies when entries is empty", () => {
+        const workWeek : Schedule = {
+            id: "ww-2",
+            name: "work-week-swing",
+            windows: [{
+                days: ["mon", "tue", "wed", "thu", "fri"],
+                start: 780,
+                end: 1380
+            }]
+        }
+        const access : AccessLevel = {
+            id: "al-sec",
+            name: "access-level-security",
+            entries: []
+        }
+        const result = grantsAccess(access, "fr-1", "mon", 750, [workWeek]);
         expect(result).toBe(false);
     })
 })
