@@ -84,7 +84,7 @@ export function grantsAccess(level: AccessLevel, readerId: string, day: WeekDay,
         for(const entry of level.entries) {
             if(entry.readerId === readerId) {
                  for(const shift of schedules) {
-                    if(shift.id === entry.scheduleId && isWithinSchedule((shift), day, minute)) {
+                    if(shift.id === entry.scheduleId && isWithinSchedule(shift, day, minute)) {
                         return true;
                     }
                 }
